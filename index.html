@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vardhman Convent School – Excellence in Education</title>
+
+    <!-- Google Fonts: Cormorant Garamond (luxury serif) + DM Sans (clean body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           CSS CUSTOM PROPERTIES – change these to retheme the whole site
+           ============================================================ */
+        :root {
+            --navy:      #08112b;
+            --navy-mid:  #0e1e48;
+            --navy-soft: #162456;
+            --gold:      #c9a84c;
+            --gold-lt:   #e8c96a;
+            --gold-dim:  rgba(201,168,76,.18);
+            --cream:     #f8f5ee;
+            --cream-dk:  #ede8de;
+            --white:     #ffffff;
+            --text-body: #4a4a5a;
+            --text-soft: #7a7a90;
+            --radius:    14px;
+            --shadow:    0 20px 60px rgba(8,17,43,.18);
+            --trans:     all .35s cubic-bezier(.4,0,.2,1);
+        }
+
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--text-body);
+            overflow-x: hidden;
+        }
+
+        /* Utility */
+        .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+        /* ============================================================
+           SCROLL REVEAL – elements animate in when they enter the viewport
+           ============================================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: .1s; }
+        .reveal-delay-2 { transition-delay: .22s; }
+        .reveal-delay-3 { transition-delay: .34s; }
+        .reveal-delay-4 { transition-delay: .46s; }
+
+        /* ============================================================
+           ★ HEADER / NAVIGATION
+           ============================================================ */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 999;
+            padding: 0;
+            transition: var(--trans);
+        }
+
+        /* Transparent at top – fills in when scrolled (JS adds .scrolled) */
+        header.scrolled {
+            background: rgba(8,17,43,.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(201,168,76,.2);
+            box-shadow: 0 4px 30px rgba(0,0,0,.25);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 76px;
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--white);
+        }
+
+        .logo-emblem {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 14px rgba(201,168,76,.4);
+            flex-shrink: 0;
+        }
+
+        .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+        .logo-name  { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 600; letter-spacing: .02em; }
+        .logo-sub   { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); font-weight: 400; }
+
+        /* Nav links */
+        nav ul { list-style: none; display: flex; gap: 2px; }
+
+        nav a {
+            color: rgba(255,255,255,.85);
+            text-decoration: none;
+            font-size: .88rem;
+            font-weight: 500;
+            letter-spacing: .04em;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: var(--trans);
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 3px; left: 50%; right: 50%;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 2px;
+            transition: left .3s ease, right .3s ease;
+        }
+
+        nav a:hover { color: var(--white); background: rgba(201,168,76,.12); }
+        nav a:hover::after { left: 18px; right: 18px; }
+
+        /* CTA button in nav */
+        .nav-cta {
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            color: var(--navy) !important;
+            font-weight: 600 !important;
+            padding: 9px 22px !important;
+            border-radius: 50px !important;
+            box-shadow: 0 4px 16px rgba(201,168,76,.35);
+        }
+        .nav-cta:hover { box-shadow: 0 6px 22px rgba(201,168,76,.55); transform: translateY(-1px); }
+        .nav-cta::after { display: none; }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: var(--white);
+            border-radius: 2px;
+            transition: var(--trans);
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* ============================================================
+           ★ HERO SECTION
+           ============================================================ */
+        #home {
+            min-height: 100vh;
+            background: var(--navy);
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Geometric background shapes */
+        .hero-bg {
+            position: absolute; inset: 0;
+            pointer-events: none;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -15%;  right: -10%;
+            width: 70vw; height: 70vw;
+            border-radius: 50%;
+            background: radial-gradient(circle at 60% 40%, rgba(201,168,76,.12) 0%, transparent 70%);
+        }
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;  left: -10%;
+            width: 55vw; height: 55vw;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 60%, rgba(21,50,120,.6) 0%, transparent 70%);
+        }
+
+        /* Floating particles canvas (JS-driven) */
+        #particle-canvas {
+            position: absolute; inset: 0;
+            pointer-events: none;
+            opacity: .45;
+        }
+
+        /* Gold diagonal stripe */
+        .hero-stripe {
+            position: absolute;
+            top: 0; right: 18%;
+            width: 1px; height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+        }
+        .hero-stripe:nth-child(2) { right: 32%; opacity: .5; }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gold-dim);
+            border: 1px solid rgba(201,168,76,.35);
+            color: var(--gold);
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            padding: 7px 18px;
+            border-radius: 50px;
+            margin-bottom: 28px;
+            animation: fadeUp .8s ease both;
+        }
+        .hero-badge span { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; display: block; }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 24px;
+            animation: fadeUp .9s .1s ease both;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-desc {
+            font-size: 1.08rem;
+            color: rgba(255,255,255,.7);
+            line-height: 1.75;
+            margin-bottom: 42px;
+            max-width: 520px;
+            animation: fadeUp .9s .2s ease both;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            animation: fadeUp .9s .3s ease both;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+            color: var(--navy);
+            border: none;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--trans);
+            box-shadow: 0 8px 28px rgba(201,168,76,.38);
+            letter-spacing: .03em;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 38px rgba(201,168,76,.5);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--white);
+            border: 1.5px solid rgba(255,255,255,.35);
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--trans);
+            letter-spacing: .03em;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-ghost:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201,168,76,.08);
+        }
+
+        /* Special welcome toggle message */
+        #welcome-msg {
+            display: none;
+            background: rgba(201,168,76,.12);
+            border: 1px solid rgba(201,168,76,.35);
+            border-radius: var(--radius);
+            padding: 18px 24px;
+            color: var(--gold);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            margin-top: 28px;
+            animation: fadeUp .4s ease;
+        }
+
+        /* Stats bar */
+        .hero-stats {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(14,30,72,.75);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(201,168,76,.15);
+            z-index: 3;
+        }
+        .stats-inner {
+            display: flex;
+            justify-content: space-around;
+            padding: 24px;
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+        .stat { text-align: center; }
+        .stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: .78rem;
+            color: rgba(255,255,255,.55);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        .stat-divider { width: 1px; background: rgba(201,168,76,.2); }
+
+        /* ============================================================
+           ★ ABOUT SECTION
+           ============================================================ */
+        #about {
+            background: var(--cream);
+            padding: 110px 0;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 18px;
+        }
+        .section-label::before {
+            content: '';
+            width: 36px; height: 1.5px;
+            background: var(--gold);
+            display: block;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 22px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .about-img-box {
+            aspect-ratio: 4/5;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--navy-soft), var(--navy-mid));
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        /* SVG illustration stand-in */
+        .about-illustration {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .about-svg-icon {
+            font-size: 5rem;
+            opacity: .85;
+        }
+
+        .about-img-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: rgba(255,255,255,.6);
+            font-style: italic;
+        }
+
+        /* Floating accent card */
+        .about-accent-card {
+            position: absolute;
+            bottom: -28px; right: -28px;
+            background: var(--white);
+            border-radius: 16px;
+            padding: 22px 28px;
+            box-shadow: 0 20px 50px rgba(8,17,43,.14);
+            border-left: 4px solid var(--gold);
+            min-width: 180px;
+        }
+        .accent-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+        .accent-txt {
+            font-size: .82rem;
+            color: var(--text-soft);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .about-text p {
+            color: var(--text-body);
+            line-height: 1.85;
+            font-size: 1.02rem;
+            margin-bottom: 22px;
+        }
+
+        .pillar-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 32px;
+        }
+        .pillar-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .pillar-icon {
+            width: 38px; height: 38px;
+            background: var(--gold-dim);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(201,168,76,.25);
+        }
+        .pillar-text strong { display: block; font-size: .92rem; color: var(--navy); margin-bottom: 2px; }
+        .pillar-text span { font-size: .85rem; color: var(--text-soft); }
+
+        /* ============================================================
+           ★ COURSES SECTION
+           ============================================================ */
+        #courses {
+            background: var(--navy);
+            padding: 110px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #courses::before {
+            content: '';
+            position: absolute;
+            top: -30%; right: -10%;
+            width: 60vw; height: 60vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201,168,76,.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        #courses .section-title { color: var(--white); }
+
+        .courses-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 56px;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .course-card {
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 20px;
+            padding: 36px 30px;
+            transition: var(--trans);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .course-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(201,168,76,.07), transparent);
+            opacity: 0;
+            transition: var(--trans);
+        }
+        .course-card:hover {
+            background: rgba(255,255,255,.08);
+            border-color: rgba(201,168,76,.35);
+            transform: translateY(-8px);
+            box-shadow: 0 24px 60px rgba(0,0,0,.35);
+        }
+        .course-card:hover::before { opacity: 1; }
+
+        .course-emoji {
+            font-size: 2.4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .course-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.45rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 12px;
+            line-height: 1.25;
+        }
+
+        .course-card p {
+            color: rgba(255,255,255,.55);
+            font-size: .9rem;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .course-tag {
+            display: inline-block;
+            font-size: .72rem;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: var(--gold-dim);
+            border-radius: 50px;
+            padding: 4px 14px;
+            border: 1px solid rgba(201,168,76,.25);
+        }
+
+        .course-arrow {
+            position: absolute;
+            bottom: 30px; right: 28px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(201,168,76,.15);
+            border: 1px solid rgba(201,168,76,.3);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gold);
+            font-size: 1rem;
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: var(--trans);
+        }
+        .course-card:hover .course-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ============================================================
+           ★ CONTACT SECTION
+           ============================================================ */
+        #contact {
+            background: var(--cream);
+            padding: 110px 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 64px;
+            align-items: start;
+        }
+
+        .contact-info-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .contact-info-desc {
+            color: var(--text-soft);
+            font-size: .95rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .contact-details { display: flex; flex-direction: column; gap: 20px; }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .contact-icon {
+            width: 46px; height: 46px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-soft));
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 6px 18px rgba(8,17,43,.14);
+            flex-shrink: 0;
+        }
+        .contact-item-text strong { display: block; font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; color: var(--text-soft); margin-bottom: 2px; }
+        .contact-item-text span { font-size: .95rem; color: var(--navy); font-weight: 500; }
+
+        /* Form card */
+        .form-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--cream-dk);
+        }
+
+        .form-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.7rem;
+            color: var(--navy);
+            margin-bottom: 32px;
+            font-weight: 600;
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: .8rem;
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid var(--cream-dk);
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .95rem;
+            color: var(--navy);
+            background: var(--cream);
+            transition: var(--trans);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--gold);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(201,168,76,.12);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        /* Validation states */
+        .form-group.error input,
+        .form-group.error textarea {
+            border-color: #d32f2f;
+            background: #fff8f8;
+        }
+
+        .err-msg {
+            display: none;
+            font-size: .78rem;
+            color: #d32f2f;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+        .form-group.error .err-msg { display: block; }
+
+        /* Success toast */
+        .toast {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #1a5c3a, #2a7c52);
+            color: white;
+            padding: 16px 22px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            font-size: .95rem;
+            font-weight: 500;
+            animation: fadeUp .4s ease;
+            box-shadow: 0 8px 24px rgba(26,92,58,.25);
+        }
+        .toast.show { display: flex; }
+        .toast-icon { font-size: 1.3rem; }
+
+        /* ============================================================
+           ★ FOOTER
+           ============================================================ */
+        footer {
+            background: var(--navy);
+            padding: 60px 0 32px;
+            border-top: 1px solid rgba(201,168,76,.15);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand .logo { margin-bottom: 16px; display: inline-flex; }
+        .footer-desc {
+            color: rgba(255,255,255,.45);
+            font-size: .9rem;
+            line-height: 1.75;
+            max-width: 300px;
+            margin-bottom: 24px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem;
+            color: var(--white);
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .footer-links a {
+            color: rgba(255,255,255,.45);
+            text-decoration: none;
+            font-size: .88rem;
+            transition: var(--trans);
+        }
+        .footer-links a:hover { color: var(--gold); padding-left: 4px; }
+
+        .footer-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,.08);
+            margin-bottom: 28px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-bottom p {
+            color: rgba(255,255,255,.3);
+            font-size: .82rem;
+        }
+
+        .footer-bottom span { color: var(--gold); }
+
+        /* ============================================================
+           KEYFRAMES
+           ============================================================ */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,.4); }
+            50%       { box-shadow: 0 0 0 10px rgba(201,168,76,0); }
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; gap: 48px; }
+            .about-visual { display: none; } /* hide on mid sizes */
+            .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            /* Nav mobile */
+            nav ul {
+                display: none;
+                position: fixed;
+                top: 76px; left: 0; right: 0;
+                background: rgba(8,17,43,.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                gap: 0;
+                padding: 12px 20px 28px;
+                border-bottom: 1px solid rgba(201,168,76,.2);
+            }
+            nav ul.open { display: flex; }
+
+            /* Each nav link: tall tap target, clear separator */
+            nav ul li {
+                border-bottom: 1px solid rgba(255,255,255,.06);
+            }
+            nav ul li:last-child { border-bottom: none; margin-top: 10px; }
+
+            nav a {
+                display: block;
+                padding: 18px 12px;
+                border-radius: 0;
+                font-size: 1rem;
+                letter-spacing: .04em;
+            }
+            nav a::after { display: none; }
+
+            /* Contact Us button stays pill-shaped & full-width */
+            .nav-cta {
+                display: block;
+                text-align: center;
+                border-radius: 50px !important;
+                padding: 16px 22px !important;
+                margin-top: 4px;
+                font-size: 1rem !important;
+            }
+
+            .hamburger { display: flex; }
+
+            .hero-stats { display: none; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .stats-inner { flex-direction: column; gap: 20px; }
+            .stat-divider { width: 60px; height: 1px; margin: 0 auto; }
+            .form-card { padding: 28px 20px; }
+            .courses-header { flex-direction: column; align-items: flex-start; }
+        }
+
+        @media (max-width: 480px) {
+            #home { padding: 0 0 100px; }
+            .hero-content { padding-top: 100px; }
+            .hero-actions { flex-direction: column; }
+            .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ╔══════════════════════════════════════════╗
+         ║  HEADER & NAVIGATION                    ║
+         ╚══════════════════════════════════════════╝ -->
+    <header id="site-header">
+        <div class="container">
+            <div class="nav-inner">
+
+                <!-- Logo -->
+                <a href="#home" class="logo">
+                    <div class="logo-emblem">🎓</div>
+                    <div class="logo-text">
+                        <span class="logo-name">Vardhman Convent</span>
+                        <span class="logo-sub">School · Agra, U.P.</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav>
+                    <ul id="nav-menu">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#courses">Courses</a></li>
+                        <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Mobile Hamburger Button -->
+                <button class="hamburger" id="hamburger" aria-label="Open menu">
+                    <span></span><span></span><span></span>
+                </button>
+
+            </div>
+        </div>
+    </header>
+
+
+    <!-- ╔══════════════════════════════════════════╗
+         ║  HERO / HOME SECTION                    ║
+         ╚══════════════════════════════════════════╝ -->
+    <section id="home">
+        <div class="hero-bg"></div>
+
+        <!-- Subtle background stripes -->
+        <div class="hero-stripe"></div>
+        <div class="hero-stripe" style="right:32%"></div>
+
+        <!-- Particle animation canvas (JS draws stars here) -->
+        <canvas id="particle-canvas"></canvas>
+
+        <div class="container">
+            <div class="hero-content">
+
+                <!-- Small badge above title -->
+                <div class="hero-badge">
+                    <span></span>
+                    Established Excellence · Agra's Premier School
+                </div>
+
+                <!-- Main headline -->
+                <h1 class="hero-title">
+                    Where Every Child<br>
+                    <em>Discovers</em> Their<br>
+                    True Potential
+                </h1>
+
+                <!-- Subtext -->
+                <p class="hero-desc">
+                    Vardhman Convent School provides world-class education blending academic 
+                    rigour with character development — nurturing the leaders of tomorrow, today.
+                </p>
+
+                <!-- Call-to-action buttons -->
+                <div class="hero-actions">
+                    <button class="btn-primary" id="welcome-btn">✨ Welcome Message</button>
+                    <a href="#courses" class="btn-ghost">Explore Courses →</a>
+                </div>
+
+                <!-- Hidden welcome message revealed on button click -->
+                <p id="welcome-msg">
+                    "Education is not the filling of a pail, but the lighting of a fire."<br>
+                    — Welcome to Vardhman Convent School. We're thrilled to have you here! 🌟
+                </p>
+
+            </div>
+        </div>
+
+        <!-- Stat bar at the bottom of hero -->
+        <div class="hero-stats">
+            <div class="stats-inner">
+                <div class="stat">
+                    <div class="stat-num">1,200+</div>
+                    <div class="stat-label">Students Enrolled</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <div class="stat-num">95%</div>
+                    <div class="stat-label">Pass Rate</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <div class="stat-num">80+</div>
+                    <div class="stat-label">Expert Faculty</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <div class="stat-num">25 Yrs</div>
+                    <div class="stat-label">Of Excellence</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ╔══════════════════════════════════════════╗
+         ║  ABOUT SECTION                          ║
+         ╚══════════════════════════════════════════╝ -->
+    <section id="about">
+        <div class="container">
+            <div class="about-grid">
+
+                <!-- Left: decorative visual column -->
+                <div class="about-visual reveal">
+                    <div class="about-img-box">
+                        <div class="about-illustration">
+                            <div class="about-svg-icon">🏫</div>
+                            <div class="about-img-label">Vardhman Convent School</div>
+                        </div>
+                    </div>
+                    <!-- Floating accent card -->
+                    <div class="about-accent-card">
+                        <div class="accent-num">A+</div>
+                        <div class="accent-txt">Accreditation<br>Rating</div>
+                    </div>
+                </div>
+
+                <!-- Right: text content -->
+                <div class="about-text">
+                    <div class="section-label reveal">About Us</div>
+                    <h2 class="section-title reveal reveal-delay-1">
+                        A Legacy of Learning<br>Since 2001
+                    </h2>
+
+                    <p class="reveal reveal-delay-2">
+                        Vardhman Convent School, Agra was founded with a singular vision — to create 
+                        an institution where academic excellence and personal growth go hand in hand. 
+                        For over two decades, we have shaped thousands of young minds.
+                    </p>
+                    <p class="reveal reveal-delay-2">
+                        Our holistic curriculum blends modern pedagogy with time-tested values, 
+                        preparing students not just for examinations, but for life itself.
+                    </p>
+
+                    <!-- School pillars list -->
+                    <ul class="pillar-list">
+                        <li class="pillar-item reveal reveal-delay-3">
+                            <div class="pillar-icon">🔬</div>
+                            <div class="pillar-text">
+                                <strong>Research-led Teaching</strong>
+                                <span>Evidence-based methods updated every academic year.</span>
+                            </div>
+                        </li>
+                        <li class="pillar-item reveal reveal-delay-3">
+                            <div class="pillar-icon">🤝</div>
+                            <div class="pillar-text">
+                                <strong>Inclusive Community</strong>
+                                <span>A diverse, welcoming environment for every learner.</span>
+                            </div>
+                        </li>
+                        <li class="pillar-item reveal reveal-delay-4">
+                            <div class="pillar-icon">🏆</div>
+                            <div class="pillar-text">
+                                <strong>Award-winning Faculty</strong>
+                                <span>80+ dedicated educators, many with national recognition.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ╔══════════════════════════════════════════╗
+         ║  COURSES SECTION                        ║
+         ╚══════════════════════════════════════════╝ -->
+    <section id="courses">
+        <div class="container">
+
+            <div class="courses-header">
+                <div>
+                    <div class="section-label reveal" style="color:var(--gold)">Our Programmes</div>
+                    <h2 class="section-title reveal reveal-delay-1">
+                        Designed for<br>Every Learner
+                    </h2>
+                </div>
+                <a href="#contact" class="btn-ghost reveal reveal-delay-2" style="flex-shrink:0">
+                    Enquire Now →
+                </a>
+            </div>
+
+            <!-- Course cards grid -->
+            <div class="courses-grid">
+
+                <!-- Card 1 -->
+                <div class="course-card reveal">
+                    <span class="course-emoji">🔬</span>
+                    <h3>Science &amp; Technology</h3>
+                    <p>Hands-on laboratory learning covering Physics, Chemistry and Biology, with STEM projects and innovation labs that ignite curiosity.</p>
+                    <span class="course-tag">Grades 6–12</span>
+                    <div class="course-arrow">→</div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="course-card reveal reveal-delay-1">
+                    <span class="course-emoji">📐</span>
+                    <h3>Mathematics &amp; Logic</h3>
+                    <p>From foundational arithmetic to advanced calculus — our maths programme builds analytical thinking and problem-solving confidence.</p>
+                    <span class="course-tag">All Grades</span>
+                    <div class="course-arrow">→</div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="course-card reveal reveal-delay-2">
+                    <span class="course-emoji">📖</span>
+                    <h3>Languages &amp; Literature</h3>
+                    <p>English, Hindi and Sanskrit language mastery through literature, debate, creative writing and public-speaking workshops.</p>
+                    <span class="course-tag">All Grades</span>
+                    <div class="course-arrow">→</div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="course-card reveal reveal-delay-3">
+                    <span class="course-emoji">🎨</span>
+                    <h3>Arts &amp; Creativity</h3>
+                    <p>Visual arts, music, dance and theatre — nurturing imagination, self-expression and aesthetic sensibility in every student.</p>
+                    <span class="course-tag">Grades 1–10</span>
+                    <div class="course-arrow">→</div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="course-card reveal reveal-delay-1">
+                    <span class="course-emoji">💻</span>
+                    <h3>Computer Science</h3>
+                    <p>Coding, robotics, AI fundamentals and digital literacy — preparing students for the technology-driven careers of tomorrow.</p>
+                    <span class="course-tag">Grades 6–12</span>
+                    <div class="course-arrow">→</div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="course-card reveal reveal-delay-2">
+                    <span class="course-emoji">⚽</span>
+                    <h3>Sports &amp; Wellness</h3>
+                    <p>Cricket, football, athletics and yoga — fostering physical fitness, teamwork, resilience and mental well-being in every child.</p>
+                    <span class="course-tag">All Grades</span>
+                    <div class="course-arrow">→</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ╔══════════════════════════════════════════╗
+         ║  CONTACT SECTION                        ║
+         ╚══════════════════════════════════════════╝ -->
+    <section id="contact">
+        <div class="container">
+
+            <div style="text-align:center; margin-bottom:64px;">
+                <div class="section-label reveal" style="justify-content:center">Get in Touch</div>
+                <h2 class="section-title reveal reveal-delay-1">We'd Love to Hear From You</h2>
+            </div>
+
+            <div class="contact-grid">
+
+                <!-- Left: contact info -->
+                <div>
+                    <h3 class="contact-info-title reveal">Visit, Call or Write</h3>
+                    <p class="contact-info-desc reveal reveal-delay-1">
+                        Whether you're a parent looking for admissions info, a student with a query, 
+                        or a faculty prospect — our team is here to help. Reach out anytime!
+                    </p>
+
+                    <div class="contact-details">
+                        <div class="contact-item reveal reveal-delay-1">
+                            <div class="contact-icon">📍</div>
+                            <div class="contact-item-text">
+                                <strong>Address</strong>
+                                <span>Agra, Uttar Pradesh 283125</span>
+                            </div>
+                        </div>
+                        <div class="contact-item reveal reveal-delay-2">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-item-text">
+                                <strong>Phone</strong>
+                                <span>+91 (172) 555-0123</span>
+                            </div>
+                        </div>
+                        <div class="contact-item reveal reveal-delay-3">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-item-text">
+                                <strong>Email</strong>
+                                <span>admissions@vardhmanconvent.edu.in</span>
+                            </div>
+                        </div>
+                        <div class="contact-item reveal reveal-delay-4">
+                            <div class="contact-icon">🕐</div>
+                            <div class="contact-item-text">
+                                <strong>Office Hours</strong>
+                                <span>Mon – Sat · 8:00 AM – 4:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: contact form -->
+                <div class="form-card reveal reveal-delay-2">
+
+                    <h3>Send a Message</h3>
+
+                    <!-- Success toast notification -->
+                    <div class="toast" id="success-toast">
+                        <span class="toast-icon">✅</span>
+                        Thank you! Your message has been sent. We'll reply within 24 hours.
+                    </div>
+
+                    <!-- Contact Form -->
+                    <form id="contact-form" novalidate>
+
+                        <!-- Name + Email row -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" placeholder="Your name">
+                                <span class="err-msg">Please enter your full name.</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" placeholder="you@email.com">
+                                <span class="err-msg">Enter a valid email address.</span>
+                            </div>
+                        </div>
+
+                        <!-- Subject -->
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject" name="subject">
+                                <option value="">— Choose a topic —</option>
+                                <option>Admissions Enquiry</option>
+                                <option>Course Information</option>
+                                <option>Fee Structure</option>
+                                <option>General Question</option>
+                            </select>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" placeholder="Write your message…"></textarea>
+                            <span class="err-msg">Please enter your message.</span>
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit" class="btn-primary" style="width:100%;border-radius:12px;padding:16px;">
+                            Send Message →
+                        </button>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ╔══════════════════════════════════════════╗
+         ║  FOOTER                                 ║
+         ╚══════════════════════════════════════════╝ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+
+                <!-- Brand column -->
+                <div class="footer-brand">
+                    <a href="#home" class="logo">
+                        <div class="logo-emblem">🎓</div>
+                        <div class="logo-text">
+                            <span class="logo-name">Vardhman Convent</span>
+                            <span class="logo-sub">School · Agra, U.P.</span>
+                        </div>
+                    </a>
+                    <p class="footer-desc">
+                        Nurturing minds, building futures. Vardhman Convent School has been Agra's
+                        trusted centre of learning since 2001.
+                    </p>
+                </div>
+
+                <!-- Quick links -->
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About School</a></li>
+                        <li><a href="#courses">Programmes</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact info -->
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">📍 Agra, Uttar Pradesh 283125</a></li>
+                        <li><a href="#">📞 +91 (172) 555-0123</a></li>
+                        <li><a href="#">📧 info@vardhmanconvent.edu.in</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <hr class="footer-divider">
+
+            <div class="footer-bottom">
+                <p>© 2026 Vardhman Convent School, Agra. All rights reserved.</p>
+                <p>Made with <span>♥</span> for education</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ╔══════════════════════════════════════════╗
+         ║  JAVASCRIPT                             ║
+         ╚══════════════════════════════════════════╝ -->
+    <script>
+        /* ==========================================================
+           1. STICKY HEADER – adds a dark background when user scrolls
+           ========================================================== */
+        const header = document.getElementById('site-header');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+
+        /* ==========================================================
+           2. MOBILE HAMBURGER MENU TOGGLE
+           ========================================================== */
+        const hamburger = document.getElementById('hamburger');
+        const navMenu   = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            navMenu.classList.toggle('open');
+        });
+
+        // Close mobile menu when any nav link is clicked
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                navMenu.classList.remove('open');
+            });
+        });
+
+
+        /* ==========================================================
+           3. SMOOTH SCROLL for all anchor links
+           ========================================================== */
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+
+        /* ==========================================================
+           4. WELCOME BUTTON – toggles a special message in the hero
+           ========================================================== */
+        const welcomeBtn = document.getElementById('welcome-btn');
+        const welcomeMsg = document.getElementById('welcome-msg');
+        let msgVisible   = false;
+
+        welcomeBtn.addEventListener('click', () => {
+            msgVisible = !msgVisible;
+            welcomeMsg.style.display = msgVisible ? 'block' : 'none';
+            welcomeBtn.textContent   = msgVisible ? '✨ Hide Message' : '✨ Welcome Message';
+        });
+
+
+        /* ==========================================================
+           5. SCROLL-REVEAL ANIMATION using IntersectionObserver
+           ========================================================== */
+        const revealEls = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Un-observe after animation so it doesn't re-trigger
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealEls.forEach(el => observer.observe(el));
+
+
+        /* ==========================================================
+           6. CONTACT FORM VALIDATION
+           ========================================================== */
+        const contactForm  = document.getElementById('contact-form');
+        const nameInput    = document.getElementById('name');
+        const emailInput   = document.getElementById('email');
+        const messageInput = document.getElementById('message');
+        const successToast = document.getElementById('success-toast');
+
+        // Helper: mark field as invalid
+        function setError(inputEl) {
+            inputEl.closest('.form-group').classList.add('error');
+        }
+
+        // Helper: clear a field's error state
+        function clearError(inputEl) {
+            inputEl.closest('.form-group').classList.remove('error');
+        }
+
+        // Clear errors as user types
+        [nameInput, emailInput, messageInput].forEach(inp => {
+            inp.addEventListener('input', () => clearError(inp));
+        });
+
+        // Simple email regex check
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // Form submit handler
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // prevent page reload
+
+            let isValid = true;
+
+            // Hide previous success toast
+            successToast.classList.remove('show');
+
+            // --- Validate Name ---
+            if (nameInput.value.trim() === '') {
+                setError(nameInput);
+                isValid = false;
+            }
+
+            // --- Validate Email ---
+            if (emailInput.value.trim() === '' || !isValidEmail(emailInput.value.trim())) {
+                setError(emailInput);
+                isValid = false;
+            }
+
+            // --- Validate Message ---
+            if (messageInput.value.trim() === '') {
+                setError(messageInput);
+                isValid = false;
+            }
+
+            // --- If all valid, show success ---
+            if (isValid) {
+                successToast.classList.add('show');
+                contactForm.reset();
+
+                // Auto-hide toast after 6 seconds
+                setTimeout(() => successToast.classList.remove('show'), 6000);
+
+                // Log to console (in a real app this would be a fetch/AJAX call)
+                console.log('Form submitted:', {
+                    name:    nameInput.value,
+                    email:   emailInput.value,
+                    message: messageInput.value
+                });
+            }
+        });
+
+
+        /* ==========================================================
+           7. FLOATING PARTICLE CANVAS in the hero background
+              Draws small gold + white dots that drift slowly upward.
+           ========================================================== */
+        const canvas = document.getElementById('particle-canvas');
+        const ctx    = canvas.getContext('2d');
+        let particles = [];
+
+        // Make canvas fill the hero section
+        function resizeCanvas() {
+            canvas.width  = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+
+        // Create one particle with random position and speed
+        function createParticle() {
+            return {
+                x:    Math.random() * canvas.width,
+                y:    Math.random() * canvas.height,
+                r:    Math.random() * 1.8 + 0.4,        // radius 0.4 – 2.2
+                speed: Math.random() * 0.35 + 0.1,      // drift speed
+                opacity: Math.random() * 0.5 + 0.15,
+                gold:  Math.random() > 0.6               // 40% are gold-coloured
+            };
+        }
+
+        // Initialise 120 particles
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 120; i++) particles.push(createParticle());
+        }
+
+        // Animation loop
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = p.gold
+                    ? `rgba(201,168,76,${p.opacity})`
+                    : `rgba(255,255,255,${p.opacity})`;
+                ctx.fill();
+
+                // Move particle upward
+                p.y -= p.speed;
+
+                // Wrap around to the bottom when it exits the top
+                if (p.y + p.r < 0) {
+                    p.y = canvas.height + p.r;
+                    p.x = Math.random() * canvas.width;
+                }
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Kick everything off
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+
+        // Recalculate on window resize
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initParticles();
+        });
+
+    </script>
+</body>
+</html>
